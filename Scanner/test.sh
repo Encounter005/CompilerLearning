@@ -1,5 +1,7 @@
 #!/bin/bash
 
+make scanner
+
 # 定义测试文件列表
 
 file_pattern="input[0-9][0-9]"
@@ -34,3 +36,5 @@ if [ ${#error_file[@]} -gt 0 ]; then
 else
   echo "All tests completed successfully."
 fi
+
+make clean
