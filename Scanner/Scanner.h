@@ -1,12 +1,9 @@
 #pragma once
-#include <cerrno>
-#include <cstdlib>
-#include <cstring>
 #include <fstream>
 #include <iostream>
-#include <memory>
 #include <string>
-#include <vector>
+#include <stdexcept>
+#include <cstring>
 
 enum TokenType {
     T_PLUS   = 0,
@@ -30,6 +27,7 @@ private:
     void putback(int c);
     int  scanint(int c);
     int  chrops(const std::string &str, char target);
+    void handle_error(const std::string &message);
     struct Token {
         int token;
         int intvalue;

@@ -6,9 +6,13 @@ int main(int argc, char *argv[]) {
         std::cerr << "Usage: " << argv[0] << std::endl;
         exit(1);
     }
-    
-    Scanner scanner(argv[1]);
-    scanner.work();
+
+    try {
+        Scanner scanner(argv[1]);
+        scanner.work();
+    } catch (std::exception &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
 
     return 0;
 }

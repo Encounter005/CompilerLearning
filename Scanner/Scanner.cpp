@@ -3,9 +3,9 @@
 Scanner::Scanner(const std::string &filename)
     : _infile(filename), _line(1), _putback('\n') {
     if (!_infile.is_open()) {
-        std::cerr << "Unable to open file: " << filename << " "
-                  << strerror(errno) << std::endl;
-        exit(1);
+        handle_error(
+            "Unable to open file: " + filename + " "
+            + std::string(strerror(errno)));
     }
 }
 
@@ -29,10 +29,10 @@ int Scanner::next() {
 }
 
 int Scanner::skip() {
-    auto c = next();
-    while ('\n' == c || '\t' == c || '\r' == c || '\f' == c || ' ' == c) {
+    int c;
+    do {
         c = next();
-    }
+    } while ('\n' == c || '\t' == c || '\r' == c || '\f' == c || ' ' == c);
     return c;
 }
 
@@ -51,7 +51,7 @@ int Scanner::scanint(int c) {
 
     while ((tmp = chrops("0123456789", c)) >= 0) {
         val = val * 10 + tmp;
-        c = next();
+        c   = next();
     }
 
     putback(c);
@@ -74,9 +74,9 @@ bool Scanner::scan(Token *t) {
             break;
         }
 
-        std::cerr << "Unrecognized character " << c << " on line " << _line
-                  << std::endl;
-        exit(1);
+        handle_error(
+            "Unrecognized character: " + std::to_string(c)
+            + " on line: " + std::to_string(_line));
     }
 
     return true;
@@ -91,4 +91,9 @@ void Scanner::work() {
         }
         std::cout << std::endl;
     }
+}
+
+void Scanner::handle_error(const std::string &message) {
+    std::cerr << "Error: " << message << std::endl;
+    std::exit(1);
 }
